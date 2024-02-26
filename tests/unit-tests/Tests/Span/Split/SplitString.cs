@@ -1,7 +1,9 @@
 ﻿using static SpanExtensions.Tests.UnitTests.TestHelper;
+using SpanExtensions.SourceGenerators;
 
 namespace SpanExtensions.Tests.UnitTests
 {
+    [GenerateCopy(FindAndReplaces = new[] { ".ToCharArray().AsSpan()", ".AsSpan()" }, RegexReplaces = new[] { "(?<!ReadOnly|As)Span", "ReadOnlySpan" })]
     public static partial class SpanSplitTests
     {
         public sealed class SplitString
