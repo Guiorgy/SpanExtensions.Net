@@ -1,4 +1,5 @@
 ﻿using static SpanExtensions.Tests.UnitTests.TestHelper;
+using static SpanExtensions.SpanExtensions;
 
 namespace SpanExtensions.Tests.UnitTests
 {
