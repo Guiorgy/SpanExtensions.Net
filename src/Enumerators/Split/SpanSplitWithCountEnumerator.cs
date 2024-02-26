@@ -1,14 +1,16 @@
 ﻿using System;
+using SpanExtensions.SourceGenerators;
 
 namespace SpanExtensions.Enumerators
 {
     /// <summary>
-    /// Supports iteration over a <see cref="ReadOnlySpan{T}"/> by splitting it a a specified delimiter of type <typeparamref name="T"/> with an upper limit of splits performed.
+    /// Supports iteration over a <see cref="Span{T}"/> by splitting it a a specified delimiter of type <typeparamref name="T"/> with an upper limit of splits performed.
     /// </summary>
-    /// <typeparam name="T">The type of elements in the enumerated <see cref="ReadOnlySpan{T}"/>.</typeparam>
+    /// <typeparam name="T">The type of elements in the enumerated <see cref="Span{T}"/>.</typeparam>
+    [GenerateCopy(RegexReplaces = new[] { "(?<!ReadOnly)Span", "ReadOnlySpan" })]
     public ref struct SpanSplitWithCountEnumerator<T> where T : IEquatable<T>
     {
-        ReadOnlySpan<T> Span;
+        Span<T> Span;
         readonly T Delimiter;
         const int DelimiterLength = 1;
         readonly CountExceedingBehaviour CountExceedingBehaviour;
@@ -18,16 +20,16 @@ namespace SpanExtensions.Enumerators
         /// <summary>
         /// Gets the element in the collection at the current position of the enumerator.
         /// </summary>
-        public ReadOnlySpan<T> Current { get; internal set; }
+        public Span<T> Current { get; internal set; }
 
         /// <summary>
-        /// Constructs a <see cref="SpanSplitWithCountEnumerator{T}"/> from a span and a delimiter. <strong>Only consume this class through <see cref="ReadOnlySpanExtensions.Split{T}(ReadOnlySpan{T}, T, int, CountExceedingBehaviour)"/></strong>.
+        /// Constructs a <see cref="SpanSplitWithCountEnumerator{T}"/> from a span and a delimiter. <strong>Only consume this class through <see cref="SpanExtensions.Split{T}(Span{T}, T, int, CountExceedingBehaviour)"/></strong>.
         /// </summary>
-        /// <param name="source">The <see cref="ReadOnlySpan{T}"/> to be split.</param>
-        /// <param name="delimiter">An instance of <typeparamref name="T"/> that delimits the various sub-ReadOnlySpans in <paramref name="source"/>.</param>
-        /// <param name="count">The maximum number of sub-ReadOnlySpans to split into.</param>
+        /// <param name="source">The <see cref="Span{T}"/> to be split.</param>
+        /// <param name="delimiter">An instance of <typeparamref name="T"/> that delimits the various sub-Spans in <paramref name="source"/>.</param>
+        /// <param name="count">The maximum number of sub-Spans to split into.</param>
         /// <param name="countExceedingBehaviour">The handling of the instances more than count.</param>
-        public SpanSplitWithCountEnumerator(ReadOnlySpan<T> source, T delimiter, int count, CountExceedingBehaviour countExceedingBehaviour = CountExceedingBehaviour.AppendRemainingElements)
+        public SpanSplitWithCountEnumerator(Span<T> source, T delimiter, int count, CountExceedingBehaviour countExceedingBehaviour = CountExceedingBehaviour.AppendRemainingElements)
         {
             Span = source;
             Delimiter = delimiter;

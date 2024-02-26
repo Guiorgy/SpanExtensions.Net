@@ -1,15 +1,17 @@
 ﻿using System;
+using SpanExtensions.SourceGenerators;
 
 namespace SpanExtensions.Enumerators
 {
 
     /// <summary>
-    /// Supports iteration over a <see cref="ReadOnlySpan{T}"/> by splitting it at specified delimiters of type <typeparamref name="T"/>.
+    /// Supports iteration over a <see cref="Span{T}"/> by splitting it at specified delimiters of type <typeparamref name="T"/>.
     /// </summary>
-    /// <typeparam name="T">The type of elements in the enumerated <see cref="ReadOnlySpan{T}"/>.</typeparam>
+    /// <typeparam name="T">The type of elements in the enumerated <see cref="Span{T}"/>.</typeparam>
+    [GenerateCopy(RegexReplaces = new[] { "(?<!ReadOnly)Span", "ReadOnlySpan" })]
     public ref struct SpanSplitAnyEnumerator<T> where T : IEquatable<T>
     {
-        ReadOnlySpan<T> Span;
+        Span<T> Span;
         readonly ReadOnlySpan<T> Delimiters;
         const int DelimiterLength = 1;
         bool EnumerationDone;
@@ -17,14 +19,14 @@ namespace SpanExtensions.Enumerators
         /// <summary>
         /// Gets the element in the collection at the current position of the enumerator.
         /// </summary>
-        public ReadOnlySpan<T> Current { get; internal set; }
+        public Span<T> Current { get; internal set; }
 
         /// <summary>
-        /// Constructs a <see cref="SpanSplitAnyEnumerator{T}"/> from a span and a delimiter. <strong>Only consume this class through <see cref="ReadOnlySpanExtensions.SplitAny{T}(ReadOnlySpan{T}, ReadOnlySpan{T})"/></strong>.
+        /// Constructs a <see cref="SpanSplitAnyEnumerator{T}"/> from a span and a delimiter. <strong>Only consume this class through <see cref="SpanExtensions.SplitAny{T}(Span{T}, ReadOnlySpan{T})"/></strong>.
         /// </summary>
-        /// <param name="source">The <see cref="ReadOnlySpan{T}"/> to be split.</param>
-        /// <param name="delimiters">A <see cref="ReadOnlySpan{T}"/> with the instances of <typeparamref name="T"/> that delimit the various sub-ReadOnlySpans in <paramref name="source"/>.</param>
-        public SpanSplitAnyEnumerator(ReadOnlySpan<T> source, ReadOnlySpan<T> delimiters)
+        /// <param name="source">The <see cref="Span{T}"/> to be split.</param>
+        /// <param name="delimiters">A <see cref="ReadOnlySpan{T}"/> with the instances of <typeparamref name="T"/> that delimit the various sub-Spans in <paramref name="source"/>.</param>
+        public SpanSplitAnyEnumerator(Span<T> source, ReadOnlySpan<T> delimiters)
         {
             Span = source;
             Delimiters = delimiters;

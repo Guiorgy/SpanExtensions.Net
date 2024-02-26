@@ -1,13 +1,15 @@
 ﻿using System;
+using SpanExtensions.SourceGenerators;
 
 namespace SpanExtensions.Enumerators
 {
     /// <summary>
-    /// Supports iteration over a <see cref="ReadOnlySpan{Char}"/> by splitting it at a specified delimiter and based on specified <see cref="StringSplitOptions"/>  with an upper limit of splits performed.
+    /// Supports iteration over a <see cref="Span{Char}"/> by splitting it at a specified delimiter and based on specified <see cref="StringSplitOptions"/>  with an upper limit of splits performed.
     /// </summary>
+    [GenerateCopy(RegexReplaces = new[] { "(?<!ReadOnly)Span", "ReadOnlySpan" })]
     public ref struct SpanSplitSequenceStringSplitOptionsWithCountEnumerator
     {
-        ReadOnlySpan<char> Span;
+        Span<char> Span;
         readonly ReadOnlySpan<char> Delimiter;
         readonly int DelimiterLength;
         readonly bool DelimiterIsEmpty;
@@ -20,17 +22,17 @@ namespace SpanExtensions.Enumerators
         /// <summary>
         /// Gets the element in the collection at the current position of the enumerator.
         /// </summary>
-        public ReadOnlySpan<char> Current { get; internal set; }
+        public Span<char> Current { get; internal set; }
 
         /// <summary>
-        /// Constructs a <see cref="SpanSplitSequenceStringSplitOptionsWithCountEnumerator"/> from a span and a delimiter. <strong>Only consume this class through <see cref="ReadOnlySpanExtensions.Split(ReadOnlySpan{char}, ReadOnlySpan{char}, int, StringSplitOptions, CountExceedingBehaviour)"/></strong>.
+        /// Constructs a <see cref="SpanSplitSequenceStringSplitOptionsWithCountEnumerator"/> from a span and a delimiter. <strong>Only consume this class through <see cref="SpanExtensions.Split(Span{char}, ReadOnlySpan{char}, int, StringSplitOptions, CountExceedingBehaviour)"/></strong>.
         /// </summary>
-        /// <param name="source">The <see cref="ReadOnlySpan{Char}"/> to be split.</param>
-        /// <param name="delimiter">An instance of <see cref="ReadOnlySpan{Char}"/> that delimits the various sub-ReadOnlySpans in <paramref name="source"/>.</param>
-        /// <param name="count">The maximum number of sub-ReadOnlySpans to split into.</param>
+        /// <param name="source">The <see cref="Span{Char}"/> to be split.</param>
+        /// <param name="delimiter">An instance of <see cref="ReadOnlySpan{Char}"/> that delimits the various sub-Spans in <paramref name="source"/>.</param>
+        /// <param name="count">The maximum number of sub-Spans to split into.</param>
         /// <param name="options">A bitwise combination of the enumeration values that specifies whether to trim results and include empty results.</param>
         /// <param name="countExceedingBehaviour">The handling of the instances more than count.</param>
-        public SpanSplitSequenceStringSplitOptionsWithCountEnumerator(ReadOnlySpan<char> source, ReadOnlySpan<char> delimiter, int count, StringSplitOptions options, CountExceedingBehaviour countExceedingBehaviour = CountExceedingBehaviour.AppendRemainingElements)
+        public SpanSplitSequenceStringSplitOptionsWithCountEnumerator(Span<char> source, ReadOnlySpan<char> delimiter, int count, StringSplitOptions options, CountExceedingBehaviour countExceedingBehaviour = CountExceedingBehaviour.AppendRemainingElements)
         {
             Span = source;
             Delimiter = delimiter;
@@ -80,7 +82,7 @@ namespace SpanExtensions.Enumerators
                     {
                         do
                         {
-                            ReadOnlySpan<char> beforeDelimiter = Span[..delimiterIndex];
+                            Span<char> beforeDelimiter = Span[..delimiterIndex];
 
                             if(TrimEntries ? beforeDelimiter.IsWhiteSpace() : beforeDelimiter.IsEmpty)
                             {

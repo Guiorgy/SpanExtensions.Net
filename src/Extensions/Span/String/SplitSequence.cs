@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections;
 using SpanExtensions.Enumerators;
+using SpanExtensions.SourceGenerators;
 
 namespace SpanExtensions
 {
     /// <summary>
     /// Extension Methods for <see cref="Span{T}"/>.
     /// </summary>
+    [GenerateCopy(RegexReplaces = new[] { "(?<!ReadOnly)Span", "ReadOnlySpan" })]
     public static partial class SpanExtensions
     {
         /// <summary>
