@@ -1,4 +1,5 @@
 ﻿using SpanExtensions.Enumerators;
+using SpanExtensions.SourceGenerators;
 
 namespace SpanExtensions.Tests.UnitTests
 {
@@ -6,7 +7,8 @@ namespace SpanExtensions.Tests.UnitTests
     /// Extension methods to convert <see langword="ref struct"/> enumerators into <see cref="IEnumerable{T}"/>.
     /// This obviously defeats the purpose of using spans. <strong>This is for testing only</strong>.
     /// </summary>
-    public static class ToSystemEnumerableExtensions
+    [GenerateCopy(RegexReplaces = new[] { "(?<!ReadOnly)Span", "ReadOnlySpan" })]
+    public static partial class ToSystemEnumerableExtensions
     {
         public static IEnumerable<IEnumerable<T>> ToSystemEnumerable<T>(this SpanSplitEnumerator<T> spanEnumerator) where T : IEquatable<T>
         {

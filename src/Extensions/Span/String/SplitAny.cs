@@ -5,6 +5,7 @@ using SpanExtensions.SourceGenerators;
 
 namespace SpanExtensions
 {
+    [GenerateCopy(RegexReplaces = new[] { "(?<!ReadOnly)Span", "ReadOnlySpan" })]
     public static partial class SpanExtensions
     {
         /// <summary>
