@@ -1,7 +1,9 @@
 ﻿using static SpanExtensions.Tests.Fuzzing.TestHelper;
+using SpanExtensions.SourceGenerators;
 
 namespace SpanExtensions.Tests.Fuzzing
 {
+    [GenerateCopy(FindAndReplaces = new[] { ".ToCharArray().AsSpan()", ".AsSpan()" }, RegexReplaces = new[] { "(?<!ReadOnly|As)Span", "ReadOnlySpan" })]
     public static partial class SpanSplitTests
     {
         public static class SplitStringSequence
